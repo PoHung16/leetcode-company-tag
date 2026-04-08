@@ -71,6 +71,14 @@ def merge_2d_segments(segments: List[Segment]) -> List[Segment]:
 
     return final_result
 
+# Time complexity: O(NlogN)
+  # Group: Traverse size N Array, gcp constant time: O(N)
+  # Sorting: O(Nlog N)
+  # Merge: Traverse size N Array,O(N)
+# Space complexity: O(N)
+  #HashMap O(N)....create size N HashMap
+  #Final Result:  O(N)....create size N Array
+
 
 if __name__ == "__main__":
     test_data = [
