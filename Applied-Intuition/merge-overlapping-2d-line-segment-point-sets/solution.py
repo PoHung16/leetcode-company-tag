@@ -11,21 +11,19 @@ from typing import List, Tuple
 Point = Tuple[int, int]
 Segment = List[Point]
 
+# Keyword: "Merge 2D" -> 降維成 1D Interval Merge
+# Image: "The Bead Sorter" - 想像每一條無限延伸的直線都是不同的「繩子」。
+#        我們先根據斜率和截距把珠子（線段）分到正確的繩子上，
+#        然後在每根繩子上依照座標排序，像「貪吃蛇」一樣把重疊的珠子吸在一起。
+# 3-Step Flow:
+#    Step 1: Group - 透過 GCD 與截距公式，將線段分類到所屬的無限直線 (lines)。
+#    Step 2: Sort & Merge - 在每條直線上，依照端點排序並執行區間合併。
+#    Step 3: Result - 收集所有合併後的線段並回傳。
+
 def merge_2d_segments(segments: List[Segment]) -> List[Segment]:
     """
     Input Type: List[List[Tuple[int, int]]]
     Output Type: List[List[Tuple[int, int]]]
-
-    # 思路筆記：
-    # Keyword: "Merge 2D" -> 降維成 1D Interval Merge
-    # Image : 想像每一條無限延伸的直線都是不同的「繩子」。
-    #         我們先根據斜率和截距把珠子（線段）分到正確的繩子上，
-    #         然後在每根繩子上依照座標排序，像「貪吃蛇」一樣把重疊的珠子吸在一起。
-
-    # 3-Step Flow:
-    # Step 1: Group - 透過 GCD 與截距公式，將線段分類到所屬的無限直線 (lines)。
-    # Step 2: Sort & Merge - 在每條直線上，依照端點排序並執行區間合併。
-    # Step 3: Result - 收集所有合併後的線段並回傳。
     """
     if not segments:
         return []
@@ -71,14 +69,18 @@ def merge_2d_segments(segments: List[Segment]) -> List[Segment]:
 
     return final_result
 
-# Time complexity: O(NlogN)
-  # Group: Traverse size N Array, gcp constant time: O(N)
-  # Sorting: O(Nlog N)
-  # Merge: Traverse size N Array,O(N)
-# Space complexity: O(N)
-  #HashMap O(N)....create size N HashMap
-  #Final Result:  O(N)....create size N Array
-
+# ==========================================
+# Complexity Analysis:
+# Time Complexity: O(n log n)
+# - Step 1 (Grouping): O(n)，每條線段只走一次。
+# - Step 2 (Sort): O(n log n)，對每條直線上的線段排序，總量為 n。
+# - Step 3 (Merge): O(n)，每條線段最多被合併一次。
+# - 整體由排序主導，為 O(n log n)。
+#
+# Space Complexity: O(n)
+# - lines defaultdict 儲存所有 n 條線段。
+# - final_result 最多儲存 n 條合併後的線段。
+# ==========================================
 
 if __name__ == "__main__":
     test_data = [
