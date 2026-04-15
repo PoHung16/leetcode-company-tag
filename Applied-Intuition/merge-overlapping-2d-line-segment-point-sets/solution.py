@@ -6,15 +6,15 @@
 # keyword: Merge Interval -> simplify it into a 1D Interval Merge
 # Image: : Imagine every infinite line in 2D space is a different "string". We group them by slope, sort them, and merge them
 # Workflow:
-    # Step 1: Grouping –  Categorize segments 
-        # Slope - normalize with GCD + normalize with direction to have same slope
+     # Step 1: Grouping –  Categorize segments 
+        # Slope - normalize with GCD + direction to right (also vertical line to up) to have same slope
         # Intercept
     # Step 2: Sort & Merge – On each line, sort & merge to perform a standard interval merge.
-    # Step 3: Result – Collect the final merged segments and return the list.
-# Tricks
-    # if hashmap's key contains multiple value: use defaultdict(list) 
-    # If you want to traverse a map, map.items() or map.keys() or map.values()
-    # Hashmap key cannot be list
+    # Step 3: Result – Return the result
+    # Tricks
+        # if hashmap's key contains multiple value: use defaultdict(list) 
+        # If you want to traverse a map, map.items() or map.keys() or map.values()
+        # Hashmap key cannot be list
 
 
 from math import gcd
