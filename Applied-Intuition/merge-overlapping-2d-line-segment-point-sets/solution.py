@@ -4,7 +4,7 @@
 # Link: N/A - Applied Intuition Interview Problem
 
 # keyword: Merge Interval -> simplify it into a 1D Interval Merge
-# Image: : Imagine every infinite line in 2D space is a different "string". We group "beads" by slope, sort them, and merge them
+# Image: : Imagine every infinite line in 2D space is a different "string". We group them by slope, sort them, and merge them
 # Workflow:
     # Step 1: Grouping –  Categorize segments 
         # Slope - normalize with GCD + normalize with direction to have same slope
