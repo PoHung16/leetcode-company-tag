@@ -14,6 +14,7 @@
 # Tricks
     # if hashmap's key contains multiple value: use defaultdict(list) 
     # If you want to traverse a map, map.items() or map.keys() or map.values()
+    # Hashmap key cannot be list
 
 
 from math import gcd
