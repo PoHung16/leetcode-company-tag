@@ -3,45 +3,52 @@
 # Difficulty: Medium
 # Link: N/A - Applied Intuition Interview Problem
 
+# keyword: Merge Interval -> simplify it into a 1D Interval Merge
+# Image: : Imagine every infinite line in 2D space is a different "string". We group "beads" by slope, sort them, and merge them like a growing snake.
+# Workflow:
+    # Step 1: Grouping –  Categorize segments 
+        # Calculate the slope -> normalize with gcd & direction(all pivot to right and handle vertical line) -> to have the same slope ID
+        # Calculate the intercept
+    # Step 2: Sort & Merge – On each line, sort & merge to perform a standard interval merge.
+    # Step 3: Result – Collect the final merged segments and return the list.
+# Tricks
+    # if hashmap's key contains multiple value: use defaultdict(list) 
+    # If you want to traverse a map, map.items() or map.keys() or map.values()
+
+
 from math import gcd
 from collections import defaultdict
 from typing import List, Tuple
 
-# 定義型別別名
 Point = Tuple[int, int]
 Segment = List[Point]
 
-# Keyword: "Merge 2D" -> 降維成 1D Interval Merge
-# Image: "The Bead Sorter" - 想像每一條無限延伸的直線都是不同的「繩子」。
-#        我們先根據斜率和截距把珠子（線段）分到正確的繩子上，
-#        然後在每根繩子上依照座標排序，像「貪吃蛇」一樣把重疊的珠子吸在一起。
-# 3-Step Flow:
-#    Step 1: Group - 透過 GCD 與截距公式，將線段分類到所屬的無限直線 (lines)。
-#    Step 2: Sort & Merge - 在每條直線上，依照端點排序並執行區間合併。
-#    Step 3: Result - 收集所有合併後的線段並回傳。
-
 def merge_2d_segments(segments: List[Segment]) -> List[Segment]:
     """
-    Input Type: List[List[Tuple[int, int]]]
-    Output Type: List[List[Tuple[int, int]]]
+    Input: A list of line segments (each defined by a start and end point).
+    Output: A list of merged segments where overlaps are removed.
     """
     if not segments:
         return []
 
     # --- Step 1: Grouping ---
+    # We use a dictionary to group segments that lie on the exact same infinite line.
     lines = defaultdict(list)
     for seg in segments:
         p1, p2 = seg[0], seg[-1]
         dx, dy = p2[0] - p1[0], p2[1] - p1[1]
 
+        # Normalize the direction vector using GCD
         common = gcd(dx, dy)
         dx //= common
         dy //= common
 
+        # Ensure a consistent direction (vector "canonical form")
         if dx < 0 or (dx == 0 and dy < 0):
             dx, dy = -dx, -dy
 
-        # 唯一截距 Key，確保在同一條直線上的線段會分到同一個桶子
+        # Calculate a unique intercept key to distinguish parallel lines.
+        # Derived from the line equation: dy*x - dx*y = constant
         intercept_key = p1[1] * dx - p1[0] * dy
         lines[(dx, dy, intercept_key)].append(seg)
 
@@ -49,39 +56,39 @@ def merge_2d_segments(segments: List[Segment]) -> List[Segment]:
 
     # --- Step 2 & 3: Sort, Merge & Return ---
     for line_key, group in lines.items():
-        # 排序珠子：Python 元組排序會先比 x，再比 y
+        # Sorting the "beads": Python sorts tuples by x-coord first, then y-coord.
         group.sort()
 
         current_seg = group[0]
         for i in range(1, len(group)):
             next_seg = group[i]
 
-            # 貪吃蛇合併邏輯：如果當前段的尾巴 (current_seg[-1]) 碰到了下一段的頭 (next_seg[0])
+            # "Snake" merge logic: 
+            # If the tail of our current segment reaches the head of the next one...
             if current_seg[-1] >= next_seg[0]:
-                # 伸長身體：更新尾巴到最遠處
+                # Stretch the tail to the furthest point reachable.
                 current_seg = [current_seg[0], max(current_seg[-1], next_seg[-1])]
             else:
-                # 斷開了：存下目前的蛇，換下一條蛇開始
+                # There's a gap! Save the current segment and start a new "snake."
                 final_result.append(current_seg)
                 current_seg = next_seg
 
+        # Don't forget to add the last segment of the group
         final_result.append(current_seg)
 
     return final_result
 
 # ==========================================
 # Complexity Analysis:
+#
 # Time Complexity: O(n log n)
-# - Step 1 (Grouping): O(n)，每條線段只走一次。
-# - Step 2 (Sort): O(n log n)，對每條直線上的線段排序，總量為 n。
-# - Step 3 (Merge): O(n)，每條線段最多被合併一次。
-# - 整體由排序主導，為 O(n log n)。
+# - Grouping: O(n), we touch each segment once.
+# - Sorting: O(n log n), this is the bottleneck as we sort all segments.
+# - Merging: O(n), we process each segment in the sorted groups once.
 #
 # Space Complexity: O(n)
-# - lines defaultdict 儲存所有 n 條線段。
-# - final_result 最多儲存 n 條合併後的線段。
+# - We create size N list(add up all keys: segments) and size N final_result
 # ==========================================
-
 if __name__ == "__main__":
     test_data = [
         [(1, 1), (2, 2)],
@@ -92,5 +99,4 @@ if __name__ == "__main__":
     ]
 
     res = merge_2d_segments(test_data)
-    for r in res:
-        print(f"Merged Segment: {r}")
+    print(f"merge_2d_segments: {res}")
