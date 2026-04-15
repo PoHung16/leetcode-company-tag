@@ -7,8 +7,8 @@
 # Image: : Imagine every infinite line in 2D space is a different "string". We group "beads" by slope, sort them, and merge them
 # Workflow:
     # Step 1: Grouping –  Categorize segments 
-        # Calculate the slope -> normalize with gcd & direction(all pivot to right and handle vertical line) -> to have the same slope ID
-        # Calculate the intercept
+        # Slope - normalize with GCD + normalize with direction to have same slope
+        # Intercept
     # Step 2: Sort & Merge – On each line, sort & merge to perform a standard interval merge.
     # Step 3: Result – Collect the final merged segments and return the list.
 # Tricks
