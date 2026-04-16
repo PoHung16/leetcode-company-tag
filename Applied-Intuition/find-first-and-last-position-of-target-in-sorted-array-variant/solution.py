@@ -61,13 +61,14 @@ def find_range(nums: List[int], target: int) -> Tuple[int, int]:
 # - 只使用了常數個變數 (l, r, mid, bound)，
 # - 不隨輸入陣列的大小 n 而增加額外空間負擔。
 # ==========================================
-
+def test():
+    #sol = Solution()
+    #sol.find_range(6,nums_example,target_example)
+    nums_example = [5, 7, 7, 8, 8, 10]
+    target_example = 8
+    result = find_range(6,nums_example,target_example)
+    print(f"Result:{result}")
 
 
 if __name__ == "__main__":
-    nums_example = [5, 7, 7, 8, 8, 10]
-    target_example = 8
-
-    print(f"Input: {nums_example}, target: {target_example}")
-    start_idx, end_idx = find_range(nums_example, target_example)
-    print(f"Output: {start_idx} {end_idx}")
+    test()
