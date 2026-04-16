@@ -9,8 +9,8 @@ from typing import List, Tuple
 # Image: "The Wall Seeker" - 找到目標後不要停，繼續往左/右摸直到撞到邊界的牆。
 # 3-Step Flow:
 #    Step 1: Initialize left, right pointer (and a 'bound' to record the index).
-#    Step 2: Traverse with l, r (When matched, update bound and move towards the wall).
-#    Step 3: Result (Run twice to get start and end).
+#    Step 2: Traverse the array with l,r pointer (Perform Binary Search)
+#    Step 3: Result 
 
 def find_range(nums: List[int], target: int) -> Tuple[int, int]:
     """
@@ -20,11 +20,8 @@ def find_range(nums: List[int], target: int) -> Tuple[int, int]:
 
     # 定義輔助函式，用 bias 決定我們要找左牆還是右牆
     def search(find_left_bias: bool) -> int:
-        # Step 1: Initialize
         l, r = 0, len(nums) - 1
-        bound = -1
-
-        # Step 2: Traverse (Binary Search Logic)
+        ans = -1
         while l <= r:
             mid = (l + r) // 2
             if nums[mid] > target:
@@ -33,24 +30,23 @@ def find_range(nums: List[int], target: int) -> Tuple[int, int]:
                 l = mid + 1
             else:
                 # 關鍵點：記錄當前位置 (Record)
-                bound = mid
+                ans = mid
                 if find_left_bias:
-                    # 繼續往左縮小範圍，試圖撞到左邊界 (Push left boundary)
+                    # Push left boundary
                     r = mid - 1
                 else:
-                    # 繼續往右縮小範圍，試圖撞到右邊界 (Push right boundary)
+                    # Push right boundary
                     l = mid + 1
-        return bound
+        return ans
 
-    # Step 3: Result
-    # 第一次執行：鎖定左邊界
+    # First Time: Seacrh for left side bound
     start = search(find_left_bias=True)
 
-    # Edge Case: 如果找不到起點，代表 target 不存在，直接回傳 -1, -1
+    # if you can not find the start, return -1, -1
     if start == -1:
         return (-1, -1)
 
-    # 第二次執行：鎖定右邊界
+    # Second Time: Seacrh for right side bound
     end = search(find_left_bias=False)
 
     return (start, end)
@@ -65,6 +61,8 @@ def find_range(nums: List[int], target: int) -> Tuple[int, int]:
 # - 只使用了常數個變數 (l, r, mid, bound)，
 # - 不隨輸入陣列的大小 n 而增加額外空間負擔。
 # ==========================================
+
+
 
 if __name__ == "__main__":
     nums_example = [5, 7, 7, 8, 8, 10]
