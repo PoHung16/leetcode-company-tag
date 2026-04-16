@@ -10,19 +10,16 @@
     #  Step 2: Traverse the array to check if a  a Key or Value exists before, then perform following actions
     #  Step 3: Return result
 from typing import List
-class Solution:
-    def solve(self, n: int, tasks: List[str], k: int) -> int:
-        next_avaliable_time = {} # {task_name: next_earliest_start_time}
-        current_time = 0
-        for task in tasks:
-            current_time += 1
-            if task in next_avaliable_time:
-                current_time = max(current_time, next_available_time[task])
-            # Update this task's next available time (current time + cooldown k)
-            next_available_time[task] = current_time + k
-        return current_time
-
-
+def solve(n: int, tasks:List[str], k: int) -> int:
+    next_available_time = {} # {taskName : next_available_time}
+    current_time = 0
+    for i in range(len(tasks)):
+        current_time += 1
+        if tasks[i] in next_available_time:
+            current_time = max(current_time,next_available_time[tasks[i]])
+        next_available_time[tasks[i]] = current_time+k+1
+    return current_time
+    
 # --- Complexity Analysis ---
 # Time Complexity: O(N)
 #   - Traverse size N Array
@@ -31,13 +28,19 @@ class Solution:
 #   - we create size M Map
 #   - M is the number of unique tasks.
 
-
-# --- Test Area ---
 def test():
-    sol = Solution()
+    #sol = Solution()
+    #sol.find_range(6,nums_example,target_example)
     n = 6
-    tasks = ["A", "A", "A", "B", "B", "B"]
+    tasks = ["A", "B", "A", "B", "A", "B"]
     k = 2
-    print(f"Result: {sol.solve(n, tasks, k)}")  # Expected: 8
+    result = solve(n,tasks,k)
+    print(f"Result:{result}")
+    
 if __name__ == "__main__":
     test()
+    
+    
+
+
+
