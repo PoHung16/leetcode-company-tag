@@ -5,9 +5,9 @@
 
 from typing import List, Tuple
 
-# Keyword: "Sorted array, Find Answer's Range" -> Binary Search
-# Image: "The Wall Seeker" - 找到目標後不要停，繼續往左/右摸直到撞到邊界的牆。
-# 3-Step Flow:
+# Keyword: "Sorted Array -> Basic Binary Search
+# Image: "Check the mid value, if target < mid , search on left side, if target > mid , search on right side
+# Workflow - 3 Steps:
 #    Step 1: Initialize left, right pointer (and a 'bound' to record the index).
 #    Step 2: Traverse the array with l,r pointer (Perform Binary Search)
 #    Step 3: Result 
